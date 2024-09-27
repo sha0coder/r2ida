@@ -11,7 +11,10 @@ class R2PipeConsole(idaapi.PluginForm):
     def OnCreate(self, form):
         self.parent = self.FormToPyQtWidget(form)
         # Abrir r2pipe con el archivo actual de IDA
-        self.r2 = r2pipe.open(ida_nalt.get_input_file_path())
+        base_address = idaapi.get_imagebase()
+        print('r2 opening ', ida_nalt.get_input_file_path(), 'at base', hex(base_address))
+        self.r2 = r2pipe.open(ida_nalt.get_input_file_path(), flags=['-m', hex(base_address)])
+        print('r2 analyzing binary')
         self.r2.cmd("aaaa")
         self.sync_function_names()
         self.init_ui()
@@ -72,6 +75,8 @@ class R2PipeConsole(idaapi.PluginForm):
                 addr = int(self.r2.cmd('s')[2:],16)
                 self.output.append('> ida')
                 self.output.append(str(decompile(addr)))
+            elif cmd == 'cls':
+                self.output.clear()
             else:
                 try:
                     result = self.r2.cmd(cmd)
