@@ -5,7 +5,6 @@
 - sync subview (go to asm subview in the point where is the radare seek)
 - "ida" command to view the ida decompilation in the radare subview
 
-?RCTL
 ## Install
 put the plugin on ida plugins folder, and Crtl + Shift + R
 locate the subview where is more confortable for you.
